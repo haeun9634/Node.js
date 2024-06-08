@@ -34,7 +34,11 @@ export const joinReivew = async (body) => {
         'grade':body.grade,
         'review_date': nowdate
     });
-    //리뷰는 같은 사람이 같은 가게에 여러번 쓸 수 있으므로 
+
+    if(joinReviewData == -1){ //가게 ID가 존재하지 않을 경우 
+        throw new BaseError(status.STORE_NOT_FOUND); // 에러를 던짐
+    }
+    //리뷰는 같은 사람이 같은 가게에 여러번 쓸 수 있음
     return storeReviewDTO(await getReivew(joinReviewData)); 
 
 

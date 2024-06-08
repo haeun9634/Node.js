@@ -4,7 +4,7 @@ import { pool } from "../../config/db.connect.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 import {insertStoreSql, confirmPhone, getStoreID, getMapStoreID, 
-    insertReviewSql, getReviewID, insertMissionSql, confirmMission, getMissionID} from "./store.sql.js"
+    insertReviewSql, getReviewID, insertMissionSql, confirmMission, getMissionID, confirmStore } from "./store.sql.js"
 
 // Store 데이터 삽입
 export const addStore = async (data) => {
@@ -69,15 +69,22 @@ export const mapStore = async(storeId) =>{
 export const addReview = async (data) => {
     try{
         const conn = await pool.getConnection();
-        
-        console.log(data);
+        const [confirm] = await pool.query(confirmStore, data.store_id);
+        if(!confirm[0].isExistStore){//가게 id가 존재하지 않으면 -1
+            conn.release();
+            return -1;
+        }
 
         const result = await pool.query(insertReviewSql, [ data.user_id, data.store_id, data.content, data.grade, data.review_date]);
         conn.release();
         return result[0].insertId;
         
     }catch (err) {
-        throw new BaseError(status.PARAMETER_IS_WRONG);
+        if (err instanceof BaseError) {
+            throw err;
+          } else {
+            throw new BaseError(status.PARAMETER_IS_WRONG);
+          }
     }
 }
 
@@ -108,7 +115,7 @@ export const addMission = async (data) => {
         console.log(data);
 
         const [confirm] = await pool.query(confirmMission, [data.store_id, data.content]);
-        if(confirm[0].isExistMission){//이미 같은 미션이 존재하면 -1
+        if(confirm[0].isExistMission){//이미 같은 미션이 존재하면 -1 반환
             conn.release();
             return -1;
         }

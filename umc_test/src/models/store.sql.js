@@ -2,9 +2,11 @@
 
 //가게추가
 export const insertStoreSql = "INSERT INTO store (store_name, store_content, store_address, store_spec_address, store_phone) VALUES (?, ?, ?, ?, ?);";
+//가게 id 존재 여부 확인
+export const confirmStore = "SELECT EXISTS(SELECT 1 FROM store WHERE id = ?) AS isExistStore";
 
 export const getStoreID = "SELECT * FROM store WHERE id = ?";
-
+//중복된 가게 번호 확인
 export const confirmPhone = "SELECT EXISTS(SELECT 1 FROM store WHERE store_phone = ?) as isExistPhone";
 
 export const getMapStoreID = "SELECT * FROM store WHERE store_address = (SELECT store_address FROM store WHERE id = ?)";
