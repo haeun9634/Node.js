@@ -20,11 +20,11 @@ export const insertUserMissionSql = "INSERT INTO mission_table (user_id, mission
 //미션 완료하는 함수
 export const missionComplete = "UPDATE mission_table SET complete = 1 WHERE user_id = ? AND mission_id = ?";
 //미션 완료시 유저의 포인트를 증가시켜주는 함수
-export const addUserPoint = "UPDATE user SET point = point + (SELECT mission.mission_point" +
-    "FROM mission_table"+
-    "JOIN mission ON mission_table.mission_id = mission.id"+
-    "WHERE mission_table.user_id = ? AND mission_table.mission_id = ? AND mission_table.complete = 1)"+
-    "WHERE id = ?";
+export const addUserPoint = "UPDATE user SET point = point + (SELECT mission.mission_point " +
+"FROM mission_table " +
+"JOIN mission ON mission_table.mission_id = mission.id " +
+"WHERE mission_table.user_id = ? AND mission_table.mission_id = ? AND mission_table.complete = 1) " +
+"WHERE id = ?";
 //도전중인 미션 조회하는 함수
 export const UserMission = "SELECT m.* " +
                              "FROM mission_table mt " +

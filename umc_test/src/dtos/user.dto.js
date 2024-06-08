@@ -13,13 +13,14 @@ export const signinResponseDTO = (user, prefer) => {
 // 사용자 미션 DTO
 export const userMissionDTO = (mission) => {
     return {
-        "id": mission[0].id,
-        "content": mission[0].content,
-        "store_id": mission[0].store_id,
-        "point": mission[0].point,
-        "due_date": mission[0].due_date
+      "id": mission.id,
+      "content": mission.content,
+      "store_id": mission.store_id,
+      "point": mission.mission_point,
+      "due_date": mission.due_date
     };
-};
+  };
+  
 
 // 사용자 미션 목록 DTO
 export const userMissionsDTO = (missions) => {
